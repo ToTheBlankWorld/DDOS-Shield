@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🛡️ DDOS-Shield
+<img src="assets/shield.svg" width="72" alt="DDOS-Shield logo" />
+
+# DDOS-Shield
 
 ### ☁️ *The Security Operations Center that lives in your terminal*
 
