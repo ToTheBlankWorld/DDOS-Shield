@@ -16,11 +16,6 @@
 
 <br/>
 
-> 🎯 **SIH1649 — DDoS Protection System for Cloud: Architecture & Tool**
-> 🏛️ Ministry of Defence (MoD) · SAG, DRDO · 🔗 Theme: *Blockchain & Cybersecurity*
-
-<br/>
-
 [Why it's different](#-why-its-different) · [Lifecycle](#-defense-lifecycle) · [Demo](#-see-it-in-action) · [Quick start](#-quick-start) · [Signals](#-the-9-detection-signals) · [Docs](#-documentation) · [Contributing](#-contributing)
 
 </div>
@@ -325,9 +320,9 @@ sudo usermod -aG ddos-shield alice    # 👥  members of the 'ddos-shield' group
 | [♻️ RECOVERY](docs/RECOVERY.md) | Recovery state machine, cooldown, rollback, metrics |
 | [🔒 SECURITY](docs/SECURITY.md) | How DDOS-Shield protects itself |
 | [⚠️ THREAT_MODEL](docs/THREAT_MODEL.md) | Threats → detection → mitigation → residual risk |
-| [🎬 DEMO](docs/DEMO.md) | Step-by-step SIH demonstration script |
+| [🎬 DEMO](docs/DEMO.md) | Step-by-step demonstration script |
 | [📏 LIMITATIONS](docs/LIMITATIONS.md) | Honest protection boundary |
-| [🎯 SIH1649_MAPPING](docs/SIH1649_MAPPING.md) | PS requirements → DDOS-Shield features |
+| [🎯 REQUIREMENTS](docs/REQUIREMENTS.md) | Requirements → features & test coverage mapping |
 
 ---
 
@@ -379,7 +374,7 @@ issues, please don't open a public issue; disclose responsibly. 🔐
 
 ### 🛡️ DDOS-Shield — *observe · learn · detect · explain · mitigate · recover · audit*
 
-**Built for SIH1649 · Blockchain & Cybersecurity** 🇮🇳
+**Autonomous. Explainable. Reversible. Auditable.**
 
 <br/>
 

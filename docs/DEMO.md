@@ -1,4 +1,4 @@
-# DDOS-Shield — SIH Demonstration Script
+# DDOS-Shield — Demonstration Script
 
 Every command below actually exists. The simulator injects **synthetic
 telemetry into the local detector only** — it never sends traffic to anyone, and
@@ -100,7 +100,7 @@ ddos-shield ddos mitigation    # the actual TTL'd rules, with incident id + reas
 ### 7 — Application stays available
 
 The IMPACT panel shows measured downtime. Because mitigation shed the flood, the
-protected services keep answering — the SIH-metrics strip shows `downtime 0s` (or
+protected services keep answering — the metrics strip shows `downtime 0s` (or
 the real measured value if the app did degrade).
 
 ### 8 — The attack stops

@@ -1,12 +1,9 @@
-# SIH1649 → DDOS-Shield — Requirement Mapping
+# DDOS-Shield — Requirements & Coverage Mapping
 
-**SIH1649 — DDoS Protection System for Cloud: Architecture and Tool**
-Ministry of Defence (MoD) · SAG, DRDO · Theme: *Blockchain & Cybersecurity*
-
-Each problem-statement requirement mapped to the DDOS-Shield feature that implements
+Each core product requirement mapped to the DDOS-Shield feature that implements
 it, with the source module and the tests that cover it.
 
-| PS requirement | DDOS-Shield feature | Where | Tests |
+| Requirement | DDOS-Shield feature | Where | Tests |
 |----------------|-----------------|-------|-------|
 | Suspicious amount of traffic from one IP / IP range | Source-level anomaly detection + per-source risk scoring + temporary, TTL'd mitigation | `detect.rs` (source-concentration signal, `rank_suspects`), `mitigate.rs` | `single_source_http_flood_is_detected_and_named`, `low_scoring_sources_are_not_blocked` |
 | Many sources sharing a behavioural profile (coordinated) | Behaviour-similarity analysis: IP×endpoint coordination + user-agent uniformity + request-count uniformity (CV) | `detect.rs` (`sources_on_top_endpoint`, `uniformity`, behaviour signal) | `distributed_flood_is_detected_even_though_no_single_ip_stands_out`, `uniformity_separates_scripts_from_people` |
@@ -21,7 +18,7 @@ it, with the source module and the tests that cover it.
 | Attacks originating **inside** the cloud | Internal (docker-bridge) traffic/connection anomaly detection + classification | `telemetry.rs`, `detect.rs` (`InternalAnomaly`) | `internal_container_anomaly_is_separated_from_edge_traffic` |
 | Connection-layer attacks | Connection/SYN exhaustion detection + connection limiting + SYN ceiling | `telemetry.rs`, `detect.rs`, `mitigate.rs` | `connection_flood_without_http_requests` |
 | Incident management / reporting | Unique incident ids (`DDOS-SHIELD-YYYYMMDD-NNNN`), full records with measured metrics, timeline, CLI/TUI reports, JSON export | `incident.rs`, `cli.rs` | `ids_increment_within_a_day_and_reset_across_days`, `absorb_keeps_the_worst_case`, `incident_round_trips_through_json` |
-| **Theme: Blockchain & Cybersecurity** | Tamper-evident SHA-256 hash chain over every security event; `audit verify` detects edit/delete/reorder/forge; optional external anchor (`AuditSink` / `BlockchainAnchorSink`) that never gates protection | `audit.rs`, `sha256.rs` | `editing_a_past_record_is_detected`, `deleting_a_record_is_detected`, `reordering_records_is_detected`, `appending_a_forged_record_is_detected`, `a_failing_anchor_never_breaks_the_local_chain`, `nist_vectors` |
+| Tamper-evident security record | Tamper-evident SHA-256 hash chain over every security event; `audit verify` detects edit/delete/reorder/forge; optional external anchor (`AuditSink` / `BlockchainAnchorSink`) that never gates protection | `audit.rs`, `sha256.rs` | `editing_a_past_record_is_detected`, `deleting_a_record_is_detected`, `reordering_records_is_detected`, `appending_a_forged_record_is_detected`, `a_failing_anchor_never_breaks_the_local_chain`, `nist_vectors` |
 | Architecture **and tool** | Full CLI + SOC-style TUI + headless systemd engine; single Rust binary | `cli.rs`, `main.rs`, `ui_shield.rs`, `engine.rs`, `scripts/` | (integration on the VPS) |
 | Configurable / tunable | Validated `/etc/ddos-shield/config.toml`; `config validate` reports corrections | `config.rs` | `out_of_range_is_clamped_not_fatal`, `unordered_thresholds_reset`, `round_trips_through_toml` |
 | Safe demonstrability | Local-only synthetic simulator (never targets third parties), flagged end-to-end | `simulate.rs`, `cli.rs` | `distributed_produces_many_sources_no_single_dominant`, `burst_is_silent_except_one_tick`, `simulated_incidents_are_flagged` |
@@ -45,7 +42,7 @@ AUDIT     audit.rs       SHA-256 tamper-evident chain
 
 ## Test coverage summary
 
-131 unit tests in the library crate cover risk scoring, anomaly detection,
+150 unit tests in the library crate cover risk scoring, anomaly detection,
 baseline (incl. attack-poisoning resistance), classification of every attack
 type, source/endpoint scoring, whitelist protection, rule TTLs, mitigation
 policy/escalation, the recovery state machine, incident persistence, the hash

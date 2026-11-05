@@ -731,7 +731,7 @@ fn render_incident(f: &mut Frame, area: Rect, s: &ShieldSnapshot) {
         Paragraph::new(vec![Line::from(""), strip]).block(
             Block::default()
                 .borders(Borders::TOP)
-                .title(" SIH METRICS (live) ")
+                .title(" METRICS (live) ")
                 .border_style(Style::default().fg(CREAM)),
         ),
         rows[2],

@@ -2,11 +2,10 @@
 
 ## 1. Problem
 
-SIH1649 asks for a DDoS protection system for cloud infrastructure that detects
+DDOS-Shield is a DDoS protection system for cloud infrastructure that detects
 suspicious traffic (from single sources, ranges, or coordinated distributed
 sources), protects against it automatically, recovers automatically, maintains
-high availability, and — under the *Blockchain & Cybersecurity* theme — keeps a
-trustworthy security record.
+high availability, and keeps a trustworthy, tamper-evident security record.
 
 ## 2. Shape of the solution
 

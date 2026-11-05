@@ -1,7 +1,7 @@
 //! Tamper-evident security audit ledger.
 //!
-//! This is the "Blockchain & Cybersecurity" half of SIH1649, done at the size
-//! the problem actually calls for. Putting every packet on a chain would be
+//! This is the tamper-evidence half of the design, done at the size the
+//! problem actually calls for. Putting every packet on a chain would be
 //! theatre; what matters operationally is that the *security record* — every
 //! detection, mitigation, rollback and recovery — cannot be quietly edited
 //! after the fact.
