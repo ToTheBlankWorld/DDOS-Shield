@@ -1,0 +1,28 @@
+[Unit]
+Description=DDOS-Shield — autonomous DDoS detection, mitigation, recovery & audit
+Documentation=https://github.com/ToTheBlankWorld/DDOS-Shield
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Headless engine: runs the full SHIELD pipeline (telemetry -> baseline ->
+# detect -> mitigate -> recover -> audit) with no TUI attached. It shares the
+# same /var/lib/ddos-shield state the interactive tool reads, so `ddos-shield ddos
+# status` reflects this process.
+ExecStart=/usr/local/bin/ddos-shield ddos daemon
+Restart=on-failure
+RestartSec=5
+# DDOS-Shield needs root to program ipset/iptables. It never disables the firewall
+# on failure; a crash simply stops new automatic rules (existing ones expire by
+# their kernel TTL).
+User=root
+Nice=-5
+# harden what we can without blocking the firewall syscalls the shield needs
+NoNewPrivileges=false
+ProtectHome=read-only
+ProtectSystem=full
+ReadWritePaths=/var/lib/ddos-shield /var/log/ddos-shield /run/ddos-shield
+
+[Install]
+WantedBy=multi-user.target
