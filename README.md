@@ -2,22 +2,26 @@
 
 # 🛡️ DDOS-Shield
 
-### ☁️ Cloud Security Control Center — powered by **DDOS-Shield**
+### ☁️ *The Security Operations Center that lives in your terminal*
 
-**Autonomous Cloud DDoS Detection · Mitigation · Recovery · Tamper-Evident Security Audit**
+**Autonomous Cloud DDoS Detection · Mitigation · Recovery · Tamper-Evident Audit**
 
 <br/>
 
 ![Rust](https://img.shields.io/badge/Built_with-Rust-CE422B?style=for-the-badge&logo=rust&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Linux_VPS-FCC624?style=for-the-badge&logo=linux&logoColor=black)
-![Tests](https://img.shields.io/badge/Tests-131_passing-2ea44f?style=for-the-badge&logo=github&logoColor=white)
-![Single Binary](https://img.shields.io/badge/Deploy-Single_Binary-blue?style=for-the-badge)
-![License](https://img.shields.io/badge/Theme-Blockchain_%26_Cybersecurity-8A2BE2?style=for-the-badge)
+![Tests](https://img.shields.io/badge/Tests-152_passing-2ea44f?style=for-the-badge&logo=githubactions&logoColor=white)
+![Deploy](https://img.shields.io/badge/Deploy-Single_Binary-0A66C2?style=for-the-badge&logo=docker&logoColor=white)
+![Stars](https://img.shields.io/github/stars/ToTheBlankWorld/DDOS-Shield?style=for-the-badge&logo=github&color=yellow)
 
 <br/>
 
 > 🎯 **SIH1649 — DDoS Protection System for Cloud: Architecture & Tool**
 > 🏛️ Ministry of Defence (MoD) · SAG, DRDO · 🔗 Theme: *Blockchain & Cybersecurity*
+
+<br/>
+
+[Why it's different](#-why-its-different) · [Lifecycle](#-defense-lifecycle) · [Demo](#-see-it-in-action) · [Quick start](#-quick-start) · [Signals](#-the-9-detection-signals) · [Docs](#-documentation) · [Contributing](#-contributing)
 
 </div>
 
@@ -26,9 +30,9 @@
 ## 🌩️ What is DDOS-Shield?
 
 **DDOS-Shield** is a single, self-contained **Rust** binary that turns a bare Linux
-cloud VPS into a **Security Operations Center in your terminal**. It combines a
-full server/firewall control center with **DDOS-Shield** — an autonomous DDoS
-defense pipeline that never stops watching your traffic.
+cloud VPS into a **Security Operations Center in your terminal**. It combines a full
+server / firewall control center with an autonomous DDoS defense pipeline that never
+stops watching your traffic.
 
 <div align="center">
 
@@ -39,77 +43,163 @@ defense pipeline that never stops watching your traffic.
 
 </div>
 
-DDOS-Shield continuously **learns what normal looks like**, **detects abnormal
-patterns** with multiple explainable signals, **classifies** the attack,
-**applies layered mitigation**, **verifies** the application stays alive,
-**rolls back** the protections once the storm passes, and **records every step**
-in a tamper-evident audit chain — all with **minimal downtime** and **zero
-config to get started**.
+It continuously **learns what normal looks like**, **detects abnormal patterns** with
+multiple explainable signals, **classifies** the attack, **applies layered mitigation**,
+**verifies** the application stays alive, **rolls back** the protections once the storm
+passes, and **records every step** in a tamper-evident audit chain — with **minimal
+downtime** and **zero config to get started**.
 
----
-
-## ✨ Why it's different
-
-| | Feature | What it means |
-|---|---|---|
-| 🧠 | **No dumb thresholds** | Verdicts are a weighted sum of **9 independent signals**. Every point awarded carries the exact measurement behind it — never "AI detected DDoS" with no evidence. |
-| 🎭 | **False-positive aware** | A viral flash crowd (20× traffic but diverse & healthy) is labelled a **TRAFFIC SURGE**, *not* an attack — and is never auto-blocked. |
-| ❄️ | **Attack-aware baseline** | The learning model **freezes** during an attack, so a 10-minute flood can never poison "normal". |
-| 🔒 | **Reversible by design** | Every auto-rule lives in an isolated firewall chain with a **kernel TTL**. Your permanent blacklist, whitelist, fail2ban & Docker rules are **untouchable**. |
-| ⏱️ | **Earned recovery** | Rollback needs a cooldown **and** multiple healthy samples **and** a falling score. One quiet second proves nothing. |
-| 📐 | **Real metrics only** | Detection time, mitigation time, recovery time & downtime are **measured** — never hard-coded to look good. |
-| ⛓️ | **Tamper-evident ledger** | Every incident event is **SHA-256 hash-chained**. Any edit, delete or reorder is detected by `ddos-shield audit verify`. |
-
----
-
-## 🎬 See it in action
-
-```bash
-ddos-shield                                # 🖥️  launch the SOC control center (TUI)
-ddos-shield ddos status                    # 🎯  live risk score + threat posture
-ddos-shield ddos simulate distributed \
-        --confirm-local-test           # 🧪  SAFE, LOCAL-ONLY synthetic attack demo
-ddos-shield audit verify                   # ⛓️  verify the tamper-evident chain
-```
+<br/>
 
 <div align="center">
 
-**Watch the score climb → attack classified → auto-mitigated → app stays alive → auto-recovered → audited.**
-
 ```
-t+ 5s   score  32/100   🟡 ELEVATED
-t+10s   score  58/100   🟠 SUSPICIOUS
-t+15s   score  84/100   🔴 ATTACK        DISTRIBUTED HTTP FLOOD
-t+20s   score  94/100   🚨 CRITICAL      DISTRIBUTED HTTP FLOOD   →  🛡️ MITIGATING
+┌──────────────────────────────────────────────────────────────────────┐
+│ $ ddos-shield ddos status                                            │
+│                                                                      │
+│  score       94/100  ██████████████████████████░░  CRITICAL          │
+│  threat      DISTRIBUTED HTTP FLOOD                                  │
+│  posture     MITIGATING · DDOS-SHIELD chain armed · 3 IPs pinned     │
+│  health      HEALTHY · upstream 200s · error rate normal             │
+│  baseline    learned 14m ago · FROZEN during attack                  │
+│  audit       verified · head 9f2c…a41b                               │
+│                                                                      │
+│ $ ddos-shield audit verify                                           │
+│  OK  412 events · chain intact · tamper-evident                      │
+└──────────────────────────────────────────────────────────────────────┘
 ```
 
 </div>
 
 ---
 
+## ✨ Why it's different
+
+| | Principle | What it means |
+|---|---|---|
+| 🧠 | **No dumb thresholds** | Verdicts are a weighted sum of **9 independent signals**. Every point carries the exact measurement behind it — never *"AI detected DDoS"* with no evidence. |
+| 🎭 | **False-positive aware** | A viral flash crowd (20× traffic, but diverse & healthy) is labelled a **TRAFFIC SURGE**, *not* an attack — and is never auto-blocked. |
+| ❄️ | **Attack-aware baseline** | The learning model **freezes** during an attack, so a 10-minute flood can never poison "normal". |
+| 🔒 | **Reversible by design** | Every auto-rule lives in an isolated firewall chain with a **kernel TTL**. Your permanent blacklist, whitelist, fail2ban & Docker rules are **untouchable**. |
+| ⏱️ | **Earned recovery** | Rollback requires a cooldown **and** multiple healthy samples **and** a falling score. One quiet second proves nothing. |
+| 📐 | **Real metrics only** | Detection, mitigation, recovery & downtime times are **measured** — never hard-coded to look good. |
+| ⛓️ | **Tamper-evident ledger** | Every incident event is **SHA-256 hash-chained**. Any edit, delete or reorder is detected by `ddos-shield audit verify`. |
+
+---
+
+## ⚡ Defense lifecycle
+
+| Phase | What happens |
+|:---:|---|
+| 📊 **LEARN** | Rolling windows build an EWMA baseline of *your* traffic — per hour of day, per endpoint. |
+| 🧠 **DETECT** | 9 explainable signals score every tick from `0 → 100`. Every point is evidence-backed. |
+| 🛡️ **DEFEND** | Above threshold: layered mitigation into the isolated `DDOS-SHIELD` chain + `ddos_shield*` ipsets, each rule expiring on a **kernel TTL**. |
+| ♻️ **RECOVER** | Cooldown + consecutive healthy samples + falling score → automatic, verified rollback. |
+| ⛓️ **PROVE** | Every event hash-chained with SHA-256. The postmortem is cryptographic, not anecdotal. |
+
+---
+
+## 🎬 See it in action
+
+Watch the score climb → attack classified → auto-mitigated → app stays alive → auto-recovered → audited:
+
+<div align="center">
+
+```
+t+ 5s   score  32/100   🟡 ELEVATED
+t+10s   score  58/100   🟠 SUSPICIOUS
+t+15s   score  84/100   🔴 ATTACK        DISTRIBUTED HTTP FLOOD
+t+20s   score  94/100   🚨 CRITICAL      DISTRIBUTED HTTP FLOOD   →  🛡️ MITIGATING
+t+45s   score  41/100   🟡 ELEVATED      mitigation holding · app healthy
+t+90s   score  12/100   🟢 NORMAL        ♻️ rules rolled back · ⛓️ incident sealed
+```
+
+</div>
+
+> [!TIP]
+> **Zero-risk demo.** `ddos-shield ddos simulate distributed --confirm-local-test`
+> feeds *synthetic* telemetry into the engine — no real packets leave the box, and the
+> rollback at the end is fully automatic. Perfect for a live demo.
+
+```bash
+ddos-shield                                # 🖥️  launch the SOC control center (TUI)
+ddos-shield ddos status                    # 🎯  live risk score + threat posture
+ddos-shield ddos simulate distributed \
+        --confirm-local-test               # 🧪  SAFE, local-only synthetic attack
+ddos-shield audit verify                   # ⛓️  verify the tamper-evident chain
+```
+
+---
+
 ## 🚀 Quick start
 
-> On your VPS, as **root**:
+> [!NOTE]
+> **Prerequisites** — a Linux VPS, root access, and a Rust stable toolchain
+> (`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`).
+> `ipset` / `iptables` are programmed automatically by the installer.
 
 ```bash
 git clone https://github.com/ToTheBlankWorld/DDOS-Shield.git
 cd DDOS-Shield
 sudo bash scripts/install.sh          # 🔨 build · install · arm the shield
-ddos-shield                               # 🛡️ launch DDOS-Shield
+ddos-shield                           # 🛡️  launch DDOS-Shield
 ```
 
-Run it **always-on**, headless (no TUI):
+Run it **always-on**, headless (no TUI needed):
 
 ```bash
 sudo WITH_SERVICE=1 bash scripts/install.sh
-systemctl status ddos-shield        # ♾️ the shield engine as a service
+systemctl status ddos-shield.service  # ♾️  the shield engine as a systemd service
+```
+
+Grant a teammate passwordless access (auto-elevates via sudoers):
+
+```bash
+sudo usermod -aG ddos-shield alice    # 👥  members of the 'ddos-shield' group can run it
 ```
 
 ---
 
-## 🧠 The 9 detection signals
+## ⌨️ CLI reference
 
-<div align="center">
+<details>
+<summary><b>📖 Expand full command list</b></summary>
+
+<br/>
+
+| Command | Description |
+|---|---|
+| `ddos-shield` | 🖥️ Launch the full TUI control center |
+| `ddos-shield status` | 🩺 Host + service + security summary |
+| `ddos-shield services` | 🐳 Containers, status, domains |
+| `ddos-shield ddos status [--json]` | 🎯 Live risk score, threat, posture |
+| `ddos-shield ddos score` | 🔢 Just the number |
+| `ddos-shield ddos top [--json]` | 📊 Top sources / endpoints / networks right now |
+| `ddos-shield ddos why` | 💬 Full explainable breakdown of the current score |
+| `ddos-shield ddos incidents [--json]` | 📁 Recorded incidents |
+| `ddos-shield ddos incident <id>` | 🔍 One incident report |
+| `ddos-shield ddos baseline` | 📊 The learned normal traffic |
+| `ddos-shield ddos policy` | 📋 Detection thresholds + mitigation policy |
+| `ddos-shield ddos mitigation` | 🛡️ Active automatic firewall rules |
+| `ddos-shield ddos recover` | ♻️ Force rollback of automatic rules now |
+| `ddos-shield ddos enable \| disable` | 🔌 Arm / disarm the enforcement path |
+| `ddos-shield ddos daemon` | ⚙️ Headless engine (used by systemd) |
+| `ddos-shield ddos simulate <kind>` | 🧪 Synthetic attack: `http-flood` · `distributed` · `burst` · `connection` · `internal` · `surge` |
+| `ddos-shield ddos export [file]` | 📤 Export incidents + audit as JSON |
+| `ddos-shield audit verify` | ⛓️ Verify the tamper-evident incident chain |
+| `ddos-shield audit diagnose` | 🔬 Explain exactly why verification passes/fails |
+| `ddos-shield audit migrate` | 🗄️ Seal an incompatible legacy chain, start fresh |
+| `ddos-shield audit head` | 🧷 Current chain head hash |
+| `ddos-shield audit log [N]` | 📜 Last N audit records |
+| `ddos-shield config validate` | ✅ Check `/etc/ddos-shield/config.toml` |
+| `ddos-shield config show` | 👁️ Print the effective configuration |
+| `ddos-shield config init` | 📝 Write a default config if none exists |
+
+</details>
+
+---
+
+## 🧠 The 9 detection signals
 
 | Signal | ⚖️ Weight | Answers |
 |--------|:---:|---------|
@@ -123,21 +213,29 @@ systemctl status ddos-shield        # ♾️ the shield engine as a service
 | 🕐 Temporal anomaly | `5` | Is this abnormal *for this hour of day*? |
 | 💓 Application health | `5` | Are the protected services actually hurting? |
 
-**`0–29` 🟢 NORMAL · `30–49` 🟡 ELEVATED · `50–69` 🟠 SUSPICIOUS · `70–84` 🔴 ATTACK · `85–100` 🚨 CRITICAL**
+### 🎚️ Threat bands
 
-</div>
+| Band | Score | Gauge |
+|------|:---:|---|
+| 🟢 **NORMAL** | `0–29` | `███████████████···································` |
+| 🟡 **ELEVATED** | `30–49` | `···············██████████·························` |
+| 🟠 **SUSPICIOUS** | `50–69` | `·························██████████···············` |
+| 🔴 **ATTACK** | `70–84` | `···································████████·······` |
+| 🚨 **CRITICAL** | `85–100` | `···········································███████` |
 
 ---
 
-## 🛡️ Attacks it detects & stops
+## 💥 Attacks it detects & stops
 
-- 💥 **HTTP flood** — single-source request storms
-- 🕸️ **Distributed HTTP flood** — thousands of coordinated sources, no single IP standing out
-- 📍 **Endpoint exhaustion** — one resource hammered
-- 🔌 **Connection / SYN exhaustion** — the socket table as the target
-- ⚡ **Burst attacks** — short, sharp spikes
-- 🐳 **Internal cloud anomalies** — container-origin floods from *inside* the infrastructure
-- 🎭 **Flash crowds** — correctly identified as **legitimate**, never blocked
+| Attack | Vector | Verdict |
+|---|---|---|
+| 💥 **HTTP flood** | Single-source request storms | 🛡️ Blocked |
+| 🕸️ **Distributed HTTP flood** | Thousands of coordinated sources, no single IP standing out | 🛡️ Blocked |
+| 📍 **Endpoint exhaustion** | One resource hammered into the ground | 🛡️ Blocked |
+| 🔌 **Connection / SYN exhaustion** | The socket table *is* the target | 🛡️ Blocked |
+| ⚡ **Burst attacks** | Short, sharp spikes | 🛡️ Blocked |
+| 🐳 **Internal cloud anomalies** | Container-origin floods from *inside* the infrastructure | 🛡️ Blocked |
+| 🎭 **Flash crowds** | 20× legitimate traffic — diverse & healthy | ✅ **Never blocked** |
 
 ---
 
@@ -236,25 +334,44 @@ systemctl status ddos-shield        # ♾️ the shield engine as a service
 ## 🧪 Build & test
 
 ```bash
-cargo test --lib          # ✅ 131 unit tests — scoring, baseline, classification,
-                          #    mitigation, recovery, audit chain, config & more
-cargo build --release     # 🦀 the ddos-shield binary
-cargo clippy --lib        # 🧹 lint clean
+cargo test              # ✅ 152 unit tests — scoring, baseline, classification,
+                        #    mitigation, recovery, audit chain, config & more
+cargo build --release   # 🦀 build the ddos-shield binary
+cargo clippy            # 🧹 lint clean
+cargo fmt               # ✨ rustfmt-formatted
 ```
 
 ---
 
 ## 📏 Protection boundary (the honest bit)
 
-> ✅ DDOS-Shield protects the **host, application, reverse proxy, services & internal
+> [!IMPORTANT]
+> DDOS-Shield protects the **host, application, reverse proxy, services & internal
 > cloud traffic** on a single VPS — HTTP floods, distributed floods,
 > endpoint/connection exhaustion, burst & internal-origin attacks — keeping the
 > app alive throughout.
->
-> ⚠️ It **cannot** absorb an **upstream-link-saturating** volumetric flood — no
-> single VPS can. For that, the cloud/ISP provider must supply upstream
-> scrubbing. DDOS-Shield is the host-and-application guard **behind** that layer.
+
+> [!WARNING]
+> It **cannot** absorb an **upstream-link-saturating** volumetric flood — no single
+> VPS can. For that, the cloud/ISP provider must supply upstream scrubbing.
+> DDOS-Shield is the host-and-application guard **behind** that layer.
 > See [LIMITATIONS.md](docs/LIMITATIONS.md).
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! 🎉
+
+```bash
+git checkout -b feat/your-feature      # 🌿 branch
+cargo fmt && cargo clippy              # 🧹 keep it clean
+cargo test                             # ✅ keep 152 passing
+git commit -m "feat: your feature"     # 📌 conventional commits
+```
+
+Then open a Pull Request — describe **what** changed and **why**. For security
+issues, please don't open a public issue; disclose responsibly. 🔐
 
 ---
 
@@ -262,8 +379,12 @@ cargo clippy --lib        # 🧹 lint clean
 
 ### 🛡️ DDOS-Shield — *observe · learn · detect · explain · mitigate · recover · audit*
 
-**Built for SIH1649 · Blockchain & Cybersecurity**
+**Built for SIH1649 · Blockchain & Cybersecurity** 🇮🇳
 
-⭐ *Star this repo if DDOS-Shield guards your cloud* ⭐
+<br/>
+
+⭐ **Star this repo if DDOS-Shield guards your cloud** ⭐
+
+*Made with 🦀 and too much ☕ — because your traffic never sleeps, and neither does the shield.*
 
 </div>
